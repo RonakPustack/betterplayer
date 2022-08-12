@@ -193,7 +193,8 @@ class _BetterPlayerCupertinoControlsState
                       _buildLiveWidget(),
                     ],
                   )
-                : Row(
+                : 
+                 Row(
                     children: <Widget>[
                       if (_controlsConfiguration.enableSkips)
                         _buildSkipBack(iconColor, barHeight)
@@ -215,10 +216,18 @@ class _BetterPlayerCupertinoControlsState
                         _buildProgressBar()
                       else
                         const SizedBox(),
-                      if (_controlsConfiguration.enableProgressText)
+                      if (_controlsConfiguration.enableRemainingText)
                         _buildRemaining()
                       else
-                        const SizedBox()
+                        const SizedBox(),
+                      if (_controlsConfiguration.enableFullscreen)
+                        _buildExpandButton(
+                          backgroundColor,
+                          iconColor,
+                          barHeight,
+                        )
+                      else
+                        const SizedBox(),
                     ],
                   ),
           ),
@@ -238,12 +247,10 @@ class _BetterPlayerCupertinoControlsState
     );
   }
 
-  GestureDetector _buildExpandButton(
+    GestureDetector _buildExpandButton(
     Color backgroundColor,
     Color iconColor,
     double barHeight,
-    double iconSize,
-    double buttonPadding,
   ) {
     return GestureDetector(
       onTap: _onExpandCollapse,
@@ -254,17 +261,15 @@ class _BetterPlayerCupertinoControlsState
           borderRadius: BorderRadius.circular(10),
           child: Container(
             height: barHeight,
-            padding: EdgeInsets.symmetric(
-              horizontal: buttonPadding,
-            ),
-            decoration: BoxDecoration(color: backgroundColor),
+            padding: EdgeInsets.only(right: 12),
+            // decoration: BoxDecoration(color: backgroundColor),
             child: Center(
               child: Icon(
                 _betterPlayerController!.isFullScreen
                     ? _controlsConfiguration.fullscreenDisableIcon
                     : _controlsConfiguration.fullscreenEnableIcon,
                 color: iconColor,
-                size: iconSize,
+                size: barHeight * .45,
               ),
             ),
           ),
@@ -676,6 +681,21 @@ class _BetterPlayerCupertinoControlsState
         _betterPlayerController!.cancelNextVideoTimer();
       }
     }
+  }
+
+    Widget _buildRemaining() {
+    final position = _latestValue != null && _latestValue!.duration != null
+        ? _latestValue!.duration! - _latestValue!.position
+        : const Duration();
+
+    return Padding(
+      padding: const EdgeInsets.only(right: 12.0),
+      child: Text(
+        '-${BetterPlayerUtils.formatDuration(position)}',
+        style:
+            TextStyle(color: _controlsConfiguration.textColor, fontSize: 12.0),
+      ),
+    );
   }
 
   void _startHideTimer() {

@@ -48,6 +48,9 @@ class BetterPlayerControlsConfiguration {
   ///Flag used to enable/disable progress texts
   final bool enableProgressText;
 
+  ///Flag used to enable/disable progress texts
+  final bool enableRemainingText;
+
   ///Flag used to enable/disable progress bar
   final bool enableProgressBar;
 
@@ -176,6 +179,7 @@ class BetterPlayerControlsConfiguration {
     this.enableFullscreen = true,
     this.enableMute = true,
     this.enableProgressText = true,
+    this.enableRemainingText = true,
     this.enableProgressBar = true,
     this.enableProgressBarDrag = true,
     this.enablePlayPause = true,
